@@ -118,7 +118,7 @@ class App < Sinatra::Base
       if time_diff < 0
         log "It's time for dinner!"
       else
-        puts "It's dinner in #{time_diff.duration}."
+        log "It's dinner in #{time_diff.duration}."
       end
     end
   end
