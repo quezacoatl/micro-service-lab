@@ -8,6 +8,25 @@ require 'eventmachine'
 require 'amqp'
 require 'json'
 
+class Numeric
+  def duration
+    secs  = self.to_int
+    mins  = secs / 60
+    hours = mins / 60
+    days  = hours / 24
+
+    if days > 0
+      "#{days} days and #{hours % 24} hours"
+    elsif hours > 0
+      "#{hours} hours and #{mins % 60} minutes"
+    elsif mins > 0
+      "#{mins} minutes and #{secs % 60} seconds"
+    elsif secs >= 0
+      "#{secs} seconds"
+    end
+  end
+end
+
 class App < Sinatra::Base
 
   APP_ID = 'jl_app'
@@ -64,6 +83,15 @@ class App < Sinatra::Base
     end
 
     service_up
+
+    EM.add_periodic_timer(10) do
+      time_diff = Time.new(2014,02,07,18,30) - Time.now
+      if time_diff < 0
+        log "It's time for dinner!"
+      else
+        log "It's dinner in #{time_diff.duration}."
+      end
+    end
   end
 
   def log(msg, level = 'DEBUG')
