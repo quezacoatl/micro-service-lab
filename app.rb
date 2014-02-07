@@ -70,7 +70,7 @@ class App < Sinatra::Base
     publish({
       message: msg,
       level: level,
-    }, APP_ID, @node_id, 'LogEvent', 'log')
+    }.to_json, APP_ID, @node_id, 'LogEvent', 'log')
   end
 
   def service_up
